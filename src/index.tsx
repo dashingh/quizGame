@@ -1,15 +1,49 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import ErrorPage from "./error-page";
+import QuizSettings from "./pages/QuizSettings";
+import { QueryClient, QueryClientProvider } from "react-query";
+import AppProvider from "./StateManagement/Reducers/AppProvider";
+import QuizContainer from "./pages/QuizContainer";
+import FinalScore from "./pages/FinalScore";
 
-const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
-);
+// Create a client
+const queryClient = new QueryClient();
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <App />,
+    errorElement: <ErrorPage />,
+    children: [
+      {
+        path: "/",
+        element: <QuizSettings />,
+      },
+      {
+        path: "quiz",
+        element: <QuizContainer />,
+      },
+      {
+        path: "final",
+        element: <FinalScore />,
+      },
+    ],
+  },
+]);
+
+const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement);
 root.render(
   <React.StrictMode>
-    <App />
+    <QueryClientProvider client={queryClient}>
+      <AppProvider>
+        <RouterProvider router={router} />
+      </AppProvider>
+    </QueryClientProvider>
   </React.StrictMode>
 );
 

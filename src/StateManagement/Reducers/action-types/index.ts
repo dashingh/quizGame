@@ -1,0 +1,5 @@
+export enum ActionTypes {
+    TRIVIA_CATEGORIES = "TRIVIA_CATEGORIES",
+    TRIVIA_QUIZ = "TRIVIA_QUIZ",
+    SCORE = "SCORE",
+}
