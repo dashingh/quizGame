@@ -3,6 +3,8 @@ import { useStore } from "../Hooks/useStore";
 import { decode } from "html-entities";
 import Quiz from "./Quiz";
 import { useNavigate } from "react-router-dom";
+import Hr from "../components/UI/Hr";
+import Button from "../components/UI/Button";
 
 
 const QuizContainer = () => {
@@ -33,8 +35,10 @@ const QuizContainer = () => {
   }, [quizPos, results]);
 
   return (
-    <div className="flex flex-col gap-3 md:gap-4 bg-secondary text-white p-6 shadow-md rounded-md mx-auto w-[320px]  md:w-1/2">
-      {results.length > 0 && (
+    <div className="flex flex-col gap-3 md:gap-4 bg-secondary text-white p-6 shadow-md rounded-md mx-auto w-[320px]  md:w-1/2 md:max-w-[620px]" >
+         <h1 className="text-3xl md:text-4xl  lg:text-5xl text-white font-semibold text-center my-2 md:my-5">Quiz Game</h1>
+     <Hr />
+      {results.length > 0 ? (
         <>
           <div className="font-normal text-black flex justify-between flex-col md:flex-row">
             <h2 className="text-sm md:text-base">Category: {currentQuiz.category}</h2>
@@ -42,20 +46,26 @@ const QuizContainer = () => {
               Current Score: {score}/{quizPos}
             </div>
           </div>
-          <hr />
+           <Hr />
           <div className="font-semibold text-black text-base md:text-2xl  ">{decode(currentQuiz.question)}</div>
           <div className="flex flex-col">
-            <Quiz
+            
+               <Quiz
               listOfQuestion={listOfQuestion}
               setQuizPos={setQuizPos}
               quizPos={quizPos}
               currentQuiz={currentQuiz}
               currentQuestion={quizPos}
               correctAnswer={currentQuiz.correct_answer}
-            />
+            /> 
+            
+            
           </div>
         </>
-      )}
+      ):<>
+      <p className="text-center py-10">No Question found for selected category</p>
+      <Button buttonText={"Back"} onClick={() => navigate("/")}/>
+      </>}
     </div>
   );
 };

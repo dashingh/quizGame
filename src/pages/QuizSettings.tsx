@@ -1,6 +1,7 @@
 import { ChangeEvent, FormEvent, SyntheticEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "../components/UI/Button";
+import Hr from "../components/UI/Hr";
 import Select from "../components/UI/Select";
 import { useStore } from "../Hooks/useStore";
 import { useGet_Category, useGet_QuizData } from "../httpServices/httpServices";
@@ -89,7 +90,11 @@ const QuizSettings = () => {
   };
 
   return (
+   <div className="w-full flex flex-col">
+ 
     <form className="bg-secondary px-4 py-5 flex flex-col gap-4 max-w-md w-[320px] md:w-1/2 mx-auto rounded-md shadow-md ">
+    <h1 className="text-3xl md:text-4xl  lg:text-5xl text-white font-semibold text-center my-2 md:my-5">Quiz Game</h1>
+    <Hr />
       <div className="col-span-6 sm:col-span-3">
         <Select
           name={"category"}
@@ -124,10 +129,10 @@ const QuizSettings = () => {
           disabled
         />
       </div>
-      <div className="col-span-6 sm:col-span-3">{/* <Select labelText={"Select Difficulty:"} options={["Aus", "Pak"]} /> */}</div>
-      <div className="col-span-6 sm:col-span-3">{/* <Select labelText={"Select Type:"} options={["Aus", "Pak"]} /> */}</div>
+      <Hr />
       <Button buttonText={"Submit"} disabled={!isValid} onClick={handleSubmit} isLoading={isLoadingQuizData} />
     </form>
+   </div>
   );
 };
 

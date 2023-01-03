@@ -2,6 +2,7 @@ import { decode } from "html-entities";
 import React, { Dispatch, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "../components/UI/Button";
+import Hr from "../components/UI/Hr";
 import useHandleBack from "../Hooks/useHandleBack";
 import { useStore } from "../Hooks/useStore";
 import { Result } from "../utils/interface";
@@ -73,7 +74,8 @@ const Quiz = ({ listOfQuestion, currentQuestion, correctAnswer, quizPos, setQuiz
           );
         })}
       </div>
-      <div className="flex flex-col">
+      <Hr />
+      <div className="flex flex-col mt-6">
         <Button buttonText={"Next"} buttonClasses={"bg-yellow text-white"} disabled={!selected} onClick={handleNext} />
       </div>
     </>
