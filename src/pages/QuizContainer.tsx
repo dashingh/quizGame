@@ -20,7 +20,7 @@ const QuizContainer = () => {
   let currentQuiz = results[quizPos];
 
   const shuffleQuestion = () => {
-    let randomNumber = Math.floor(Math.random() * currentQuiz?.incorrect_answers.length + 1);
+    let randomNumber = Math.floor(Math.random() * (currentQuiz?.incorrect_answers.length + 1));
     let incorrect = currentQuiz?.incorrect_answers.filter((a) => a !== currentQuiz?.correct_answer);
     let correct = currentQuiz?.correct_answer;
     incorrect.splice(randomNumber, 0, correct);
