@@ -22,6 +22,7 @@ const QuizSettings = () => {
   const [categoryValue, setSetCategoryValue] = useState<number>(0);
   const [difficultyValue, setDifficultyValue] = useState<number>(0);
   const [typesValue, setTypesValue] = useState<number>(2);
+  const [isValid, setIsValid] = useState<boolean>(false);
   const navigate = useNavigate();
   const [formData, setFormData] = useState<InterfaceFormData>({
     amount: 10,
@@ -74,14 +75,21 @@ const QuizSettings = () => {
 
   useEffect(() => {
     setScore?.(0);
-  });
+  },[]);
+
+  useEffect(() => {
+    if(formData.category > 0 && formData.difficulty.length){
+      setIsValid(true);
+    }
+   
+  },[formData]);
 
   const handleSubmit = () => {
     submitData();
   };
 
   return (
-    <form className="bg-white px-4 py-5 flex flex-col gap-4 max-w-md w-[320px] md:w-1/2 mx-auto rounded-md shadow-md ">
+    <form className="bg-secondary px-4 py-5 flex flex-col gap-4 max-w-md w-[320px] md:w-1/2 mx-auto rounded-md shadow-md ">
       <div className="col-span-6 sm:col-span-3">
         <Select
           name={"category"}
@@ -107,7 +115,7 @@ const QuizSettings = () => {
       <div className="col-span-6 sm:col-span-3">
         <Select
           name={"type"}
-          labelText={"type:"}
+          labelText={"Type:"}
           value={typesValue}
           setSetValue={setTypesValue}
           options={typesOptions}
@@ -118,7 +126,7 @@ const QuizSettings = () => {
       </div>
       <div className="col-span-6 sm:col-span-3">{/* <Select labelText={"Select Difficulty:"} options={["Aus", "Pak"]} /> */}</div>
       <div className="col-span-6 sm:col-span-3">{/* <Select labelText={"Select Type:"} options={["Aus", "Pak"]} /> */}</div>
-      <Button buttonText={"Submit"} onClick={handleSubmit} isLoading={isLoadingQuizData} />
+      <Button buttonText={"Submit"} disabled={!isValid} onClick={handleSubmit} isLoading={isLoadingQuizData} />
     </form>
   );
 };

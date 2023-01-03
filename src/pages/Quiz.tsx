@@ -1,11 +1,12 @@
 import { decode } from "html-entities";
-import React, { Dispatch, useState } from "react";
+import React, { Dispatch, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "../components/UI/Button";
+import useHandleBack from "../Hooks/useHandleBack";
 import { useStore } from "../Hooks/useStore";
 import { Result } from "../utils/interface";
 
-const Quiz = ({ listOfQuestion, currentQuestion, correctAnswer, quizPos, setQuizPos, currentQuiz}: interfaceQuiz) => {
+const Quiz = ({ listOfQuestion, currentQuestion, correctAnswer, quizPos, setQuizPos, currentQuiz }: interfaceQuiz) => {
   const [selected, setSelected] = useState<string>("");
   const {
     setScore,
@@ -14,10 +15,12 @@ const Quiz = ({ listOfQuestion, currentQuestion, correctAnswer, quizPos, setQuiz
   } = useStore();
   const navigate = useNavigate();
 
+  const { setIsDirty, isDirty } = useHandleBack(
+    "Changes you made may not be saved."
+  );
+
   const handleSelect = (i: string) => {
-    if (selected === i && selected === currentQuiz.correct_answer) {
-      return "bg-green text-white pointer-events-none";
-    } else if (selected === i && selected !== currentQuiz.correct_answer) {
+    if (selected === i && selected !== currentQuiz.correct_answer) {
       return "bg-orange text-white pointer-events-none";
     } else if (i === currentQuiz.correct_answer) {
       return "bg-green text-white pointer-events-none";
@@ -28,16 +31,26 @@ const Quiz = ({ listOfQuestion, currentQuestion, correctAnswer, quizPos, setQuiz
 
   const handleCheck = (i: string) => {
     setSelected(i);
+
     if (i === currentQuiz.correct_answer) setScore?.(score + 1);
   };
 
   const handleNext = () => {
-    if(results.length === quizPos + 1){
-        navigate("/final")
+    if (results.length === quizPos + 1) {
+      navigate("/final");
     }
     setQuizPos(quizPos + 1);
     setSelected("");
   };
+
+  useEffect(() => {
+    if (results.length === quizPos + 1) {
+        setIsDirty(false);
+      }else{
+          setIsDirty(true);
+      }
+  },[quizPos])
+
 
 
   return (
@@ -51,10 +64,8 @@ const Quiz = ({ listOfQuestion, currentQuestion, correctAnswer, quizPos, setQuiz
               disabled={!!selected}
               className={
                 selected
-                  ? `${handleSelect(
-                      option
-                    )} my-2 flex w-full transition-all text-left text-sm md:text-base  rounded-md py-2 px-3 cursor-pointer `
-                  : `my-2 flex w-full bg-slate-200 text-left text-sm md:text-base transition-all  rounded-md py-2 px-3 cursor-pointer hover:shadow-md hover:text-white hover:bg-slate-400`
+                  ? `${handleSelect(option)} my-2 flex w-full transition-all text-left text-sm md:text-base  rounded-md py-2 px-3 cursor-pointer `
+                  : `my-2 flex w-full bg-slate-200 text-black text-left text-sm md:text-base transition-all  rounded-md py-2 px-3 cursor-pointer hover:shadow-md hover:shadow-2`
               }
             >
               {decode(option)}

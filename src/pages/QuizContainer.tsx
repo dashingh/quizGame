@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useStore } from "../Hooks/useStore";
 import { decode } from "html-entities";
 import Quiz from "./Quiz";
+import { useNavigate } from "react-router-dom";
+
 
 const QuizContainer = () => {
   const {
@@ -11,6 +13,7 @@ const QuizContainer = () => {
   const [quizPos, setQuizPos] = useState<number>(0);
   const [listOfQuestion, setListOfQuestion] = useState<string[]>([]);
   const [selectedOption, setSelectedOption] = useState<string>("");
+  const navigate = useNavigate();
 
   let currentQuiz = results[quizPos];
 
@@ -30,17 +33,17 @@ const QuizContainer = () => {
   }, [quizPos, results]);
 
   return (
-    <div className="flex flex-col gap-3 md:gap-4 bg-white p-6 shadow-md rounded-md mx-auto w-[320px]  md:w-1/2">
+    <div className="flex flex-col gap-3 md:gap-4 bg-secondary text-white p-6 shadow-md rounded-md mx-auto w-[320px]  md:w-1/2">
       {results.length > 0 && (
         <>
-          <div className="font-thin flex justify-between flex-col md:flex-row">
+          <div className="font-normal text-black flex justify-between flex-col md:flex-row">
             <h2 className="text-sm md:text-base">Category: {currentQuiz.category}</h2>
             <div className="text-sm md:text-base">
               Current Score: {score}/{quizPos}
             </div>
           </div>
           <hr />
-          <div className="font-semibold text-1xl md:text-2xl  ">{decode(currentQuiz.question)}</div>
+          <div className="font-semibold text-black text-base md:text-2xl  ">{decode(currentQuiz.question)}</div>
           <div className="flex flex-col">
             <Quiz
               listOfQuestion={listOfQuestion}
