@@ -6,6 +6,8 @@ import Hr from "../components/UI/Hr";
 import useHandleBack from "../Hooks/useHandleBack";
 import { useStore } from "../Hooks/useStore";
 import { Result } from "../utils/interface";
+import { AnimatePresence, AnimateSharedLayout, motion } from "framer-motion";
+import Item from "./Item";
 
 const Quiz = ({ listOfQuestion, currentQuestion, correctAnswer, quizPos, setQuizPos, currentQuiz }: interfaceQuiz) => {
   const [selected, setSelected] = useState<string>("");
@@ -16,17 +18,15 @@ const Quiz = ({ listOfQuestion, currentQuestion, correctAnswer, quizPos, setQuiz
   } = useStore();
   const navigate = useNavigate();
 
-  const { setIsDirty, isDirty } = useHandleBack(
-    "Changes you made may not be saved."
-  );
+  const { setIsDirty, isDirty } = useHandleBack("Changes you made may not be saved.");
 
   const handleSelect = (i: string) => {
     if (selected === i && selected !== currentQuiz.correct_answer) {
-      return "bg-orange text-white pointer-events-none";
+      return "bg-orange text-white cursor-not-allowed";
     } else if (i === currentQuiz.correct_answer) {
-      return "bg-green text-white pointer-events-none";
+      return "bg-green text-white cursor-not-allowed";
     } else {
-      return "bg-slate-200 text-black pointer-events-none cursor-pointer hover:shadow-md hover:text-white hover:bg-slate-400";
+      return "bg-slate-200 text-black  cursor-not-allowed  hover:shadow-md hover:text-white hover:bg-slate-400";
     }
   };
 
@@ -46,34 +46,25 @@ const Quiz = ({ listOfQuestion, currentQuestion, correctAnswer, quizPos, setQuiz
 
   useEffect(() => {
     if (results.length === quizPos + 1) {
-        setIsDirty(false);
-      }else{
-          setIsDirty(true);
-      }
-  },[quizPos])
-
-
+      setIsDirty(false);
+    } else {
+      setIsDirty(true);
+    }
+  }, [quizPos]);
 
   return (
     <>
-      <div className="flex flex-col mb-4">
-        {listOfQuestion.map((option, i) => {
-          return (
-            <button
-              onClick={() => handleCheck(option)}
-              key={i}
-              disabled={!!selected}
-              className={
-                selected
-                  ? `${handleSelect(option)} my-2 flex w-full transition-all text-left text-sm md:text-base  rounded-md py-2 px-3 cursor-pointer `
-                  : `my-2 flex w-full bg-slate-200 text-black text-left text-sm md:text-base transition-all  rounded-md py-2 px-3 cursor-pointer hover:shadow-md hover:shadow-2`
-              }
-            >
-              {decode(option)}
-            </button>
-          );
-        })}
-      </div>
+      <AnimateSharedLayout>
+        <motion.div className="flex flex-col mb-4" layout>
+          <AnimatePresence>
+            {listOfQuestion.map((option, i) => {
+              return (
+                <Item key={i} handleCheck={handleCheck} handleSelect={handleSelect} option={option} selected={selected} i={i} />
+              );
+            })}
+          </AnimatePresence>
+        </motion.div>
+      </AnimateSharedLayout>
       <Hr />
       <div className="flex flex-col mt-6">
         <Button buttonText={"Next"} buttonClasses={"bg-yellow text-white"} disabled={!selected} onClick={handleNext} />

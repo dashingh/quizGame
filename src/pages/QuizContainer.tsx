@@ -5,7 +5,7 @@ import Quiz from "./Quiz";
 import { useNavigate } from "react-router-dom";
 import Hr from "../components/UI/Hr";
 import Button from "../components/UI/Button";
-
+import { motion } from "framer-motion";
 
 const QuizContainer = () => {
   const {
@@ -35,9 +35,13 @@ const QuizContainer = () => {
   }, [quizPos, results]);
 
   return (
-    <div className="flex flex-col gap-3 md:gap-4 bg-secondary text-white p-6 shadow-md rounded-md mx-auto w-[320px]  md:w-1/2 md:max-w-[620px]" >
-         <h1 className="text-3xl md:text-4xl  lg:text-5xl text-white font-semibold text-center my-2 md:my-5">Quiz Game</h1>
-     <Hr />
+    <motion.div
+      initial={{ x: -10, opacity: 0 }}
+      animate={{ x: 0, opacity: 1 }}
+      className="flex flex-col gap-3 md:gap-4 bg-secondary text-white p-6 shadow-md rounded-md mx-auto w-[320px]  md:w-1/2 md:max-w-[620px]"
+    >
+      <h1 className="text-3xl md:text-4xl  lg:text-5xl text-white font-semibold text-center my-2 md:my-5">Quiz Game</h1>
+      <Hr />
       {results.length > 0 ? (
         <>
           <div className="font-normal text-black flex justify-between flex-col md:flex-row">
@@ -46,27 +50,26 @@ const QuizContainer = () => {
               Current Score: {score}/{quizPos}
             </div>
           </div>
-           <Hr />
+          <Hr />
           <div className="font-semibold text-black text-base md:text-2xl  ">{decode(currentQuiz.question)}</div>
           <div className="flex flex-col">
-            
-               <Quiz
+            <Quiz
               listOfQuestion={listOfQuestion}
               setQuizPos={setQuizPos}
               quizPos={quizPos}
               currentQuiz={currentQuiz}
               currentQuestion={quizPos}
               correctAnswer={currentQuiz.correct_answer}
-            /> 
-            
-            
+            />
           </div>
         </>
-      ):<>
-      <p className="text-center py-10">No Question found for selected category</p>
-      <Button buttonText={"Back"} onClick={() => navigate("/")}/>
-      </>}
-    </div>
+      ) : (
+        <>
+          <p className="text-center py-10">No Question found for selected category</p>
+          <Button buttonText={"Back"} onClick={() => navigate("/")} />
+        </>
+      )}
+    </motion.div>
   );
 };
 
