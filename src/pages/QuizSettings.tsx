@@ -27,7 +27,7 @@ const QuizSettings = () => {
   const [isValid, setIsValid] = useState<boolean>(false);
   const navigate = useNavigate();
   const [formData, setFormData] = useState<InterfaceFormData>({
-    amount: 1,
+    amount: 10,
     category: 0,
     difficulty: "",
     type: "multiple",
